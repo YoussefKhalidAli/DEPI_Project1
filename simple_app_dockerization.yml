@@ -1,0 +1,13 @@
+- name: Deploy Dockerized Application
+  hosts: local
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Build simple app image
+      shell: cd simpleApp && docker build -t simpleapp .
+
+    - name: Run Docker Container
+      shell: docker run -d --name simpleapp -p 5000:5000 simpleapp

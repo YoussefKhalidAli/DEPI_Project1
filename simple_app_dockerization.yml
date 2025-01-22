@@ -6,6 +6,9 @@
         name: docker.io
         state: present
 
+    - name: delete old image and container
+      shell: docker stop simpleapp && docker rm  simpleapp && docker rmi simpleapp
+
     - name: Build simple app image
       shell: cd simpleApp && docker build -t simpleapp .
 

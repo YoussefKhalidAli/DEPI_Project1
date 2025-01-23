@@ -122,3 +122,11 @@ jenkins_setup.yml playbook to automate the jenkins server setup
     - name: Run Docker Container
       shell: docker run -d --name simpleapp -p 5000:5000 simpleapp
 
+
+*Task: Pipeline Plan*
+
+Create a pipeline to re-dockerize the simple web app everytime the app.py file is changed.
+Jenkins will pull the git repo every 5 minutes and check if a change was made to the simpleApp/app.py file. If so, it will run the simple_app_dockerization.yml playbook to re-dockerize the app.
+
+
+

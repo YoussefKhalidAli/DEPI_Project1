@@ -1,0 +1,13 @@
+- name: Set up jenkins server
+  hosts: local
+  tasks:
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Pull jenkins image
+      shell: docker pull jenkins/jenkins:lts
+
+    - name: Build and run jenkins container
+      shell: docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_data:/var/jenkins_home \-v /var/run/docker.sock:/var/run/docker/sock jenkins/jenkins:lts

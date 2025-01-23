@@ -6,18 +6,12 @@
         name: docker.io
         state: present
 
-    - name: Check if container exists
-      shell: docker ps -a --filter "name=simpleapp" --format "{{"{{"}}.Names{{"}}"}}"
-      register: container_exists
-      changed_when: false
-      ignore_errors: true
-
     - name: Delete old container and image
       shell: |
         docker stop simpleapp
         docker rm simpleapp
         docker rmi simpleapp
-      when: "'simpleapp' in container_exists.stdout"
+      ignore_errors: true
 
     - name: Build simple app image
       shell: cd simpleApp && docker build -t simpleapp .

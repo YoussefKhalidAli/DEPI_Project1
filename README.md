@@ -247,3 +247,32 @@ Step 3: Push the images
 
     docker push <username>/my-jenknins-ansible:v1.0
 
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+*Task: Deployment Testing*
+
+Change app.py and check if the container is redeployed. If you don't want to wait 5 minutes run the job manually through jenkins
+
+
+**Week 4**
+
+*Task: Refine the Pipeline*
+
+After examining the pipeline there are 3 Issues present.
+
+1. The jobdoesn't build automatically every 5 minutes.
+2. the Run ansible playbook and test stages are not skipped if no change is found in simpleApp/app.py.
+3. When the job runs it checks if the last commit has changes to simpleApp/app.py and if so runs the playbook, but does't take into account if the latest commit was already accounted for and trigered a previous build.
+
+To fix these issues we:
+
+1. Add this portion to the beggining of the pipleine (under agents).
+
+       triggers {
+        cron('H/5 * * * *')
+       }
+2. 
+
+       

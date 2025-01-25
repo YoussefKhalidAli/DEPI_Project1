@@ -263,8 +263,7 @@ Change app.py and check if the container is redeployed. If you don't want to wai
 After examining the pipeline there are 3 Issues present.
 
 1. The jobdoesn't build automatically every 5 minutes.
-2. the Run ansible playbook and test stages are not skipped if no change is found in simpleApp/app.py.
-3. When the job runs it checks if the last commit has changes to simpleApp/app.py and if so runs the playbook, but does't take into account if the latest commit was already accounted for and trigered a previous build.
+2. When the job runs it checks if the last commit has changes to simpleApp/app.py and if so runs the playbook, but does't take into account if the latest commit was already accounted for and trigered a previous build.
 
 To fix these issues we:
 
@@ -273,6 +272,30 @@ To fix these issues we:
        triggers {
         cron('H/5 * * * *')
        }
-2. 
+2. Change the script in "Detect Recent Changes in app.py" to check if the commit was more than 5 minutes ago and if so skip the build
+
+
+                    script {
+                        def changes = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
+                        def commitTimestamp = sh(script: "git log -1 --format=%ct -- simpleApp/app.py", returnStdout: true).trim()
+              
+                        def currentTimestamp = System.currentTimeMillis() / 1000 
+                        def timeDiffMinutes = (currentTimestamp - commitTimestamp.toInteger()) / 60
+                      
+                        if (!changes.contains('simpleApp/app.py') || timeDiffMinutes > 5) {
+                            echo 'No changes detected in simpleApp/app.py. Skipping build.'
+                            currentBuild.result = 'SUCCESS'
+                            return
+                        } else {
+                            echo 'Changes detected in simpleApp/app.py. Proceeding with the build.'
+                        }
+                    }
+
+   
 
        
+*Task: Full Testing and Deployment*
+
+Change the simpleApp/app.py file and push the changes to the repositery, wait 5 minutes and monitor the job.
+
+

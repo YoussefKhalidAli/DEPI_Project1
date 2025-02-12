@@ -1,6 +1,6 @@
 # DevOps_Project1
 
-The documentation for the first project of DEPI's DevOps Track.
+The documentation for a small scale implementation of the CI/CD pipeline project from DEPI's DevOps Track.
 
 The following project was configured on ubuntu 22.04 LTS using multipass.
 

@@ -22,7 +22,7 @@ Create volume to save jenkins data.
 
 Build and run the image.
 
-    docker build --name jenkins -p 8080:8080 -p 50000:50000 \
+    docker run --name jenkins -p 8080:8080 -p 50000:50000 \
     -v jenkins_data:/var/jenkins_home \
     -v /var/run/docker.sock:/var/run/docker/sock \
     jenkins/jenkins:lts
